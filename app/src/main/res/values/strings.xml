@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Nexus TV</string>
+    <string name="favorites">Favoritos</string>
+    <string name="search">Buscar</string>
+    <string name="epg_agora">Agora:</string>
+    <string name="epg_proximo">Próximo:</string>
+    <string name="cache_atualizado">Dados atualizados há 3 dias</string>
+    <string name="limite_favoritos">Limite de 200 favoritos atingido</string>
+</resources>
