@@ -360,26 +360,28 @@ private fun VideoSurface(player: ExoPlayer, resizeMode: Int, modifier: Modifier 
 private class SystemLevels(private val activity: Activity?, private val audio: AudioManager) {
     private val maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC).coerceAtLeast(1)
 
-    var brightness by mutableFloatStateOf(
+    private var _brightness = mutableFloatStateOf(
         activity?.window?.attributes?.screenBrightness?.takeIf { it >= 0f } ?: 0.5f
     )
+    val brightness: Float get() = _brightness.floatValue
 
-    var volume by mutableFloatStateOf(
+    private var _volume = mutableFloatStateOf(
         audio.getStreamVolume(AudioManager.STREAM_MUSIC).toFloat() / maxVolume
     )
+    val volume: Float get() = _volume.floatValue
 
     fun setBrightness(value: Float) {
-        brightness = value.coerceIn(0.01f, 1f)
+        _brightness.floatValue = value.coerceIn(0.01f, 1f)
         activity?.window?.let { window ->
             val params = window.attributes
-            params.screenBrightness = brightness
+            params.screenBrightness = _brightness.floatValue
             window.attributes = params
         }
     }
 
     fun setVolume(value: Float) {
-        volume = value.coerceIn(0f, 1f)
-        audio.setStreamVolume(AudioManager.STREAM_MUSIC, (volume * maxVolume).roundToInt(), 0)
+        _volume.floatValue = value.coerceIn(0f, 1f)
+        audio.setStreamVolume(AudioManager.STREAM_MUSIC, (_volume.floatValue * maxVolume).roundToInt(), 0)
     }
 
     fun resetBrightness() {
